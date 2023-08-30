@@ -37,3 +37,7 @@ resource "aws_vpc_dhcp_options_association" "dns_resolver" {
   vpc_id          = aws_vpc.this.id
   dhcp_options_id = aws_vpc_dhcp_options.dhcp.id
 }
+
+output "vpc_id" {
+  value = aws_vpc.this.id
+}

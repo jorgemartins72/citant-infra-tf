@@ -24,5 +24,9 @@ resource "aws_route53_record" "cert_validation" {
   records         = [each.value.record]
   ttl             = 60
   type            = each.value.type
-  zone_id         = aws_route53_zone.this.id
+  zone_id         = aws_route53_zone.this.zone_id
+}
+
+output "website_certificado_arn" {
+  value = aws_acm_certificate.this.arn
 }

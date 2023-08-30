@@ -30,3 +30,7 @@ resource "aws_route_table_association" "rtb-association-public" {
   route_table_id = aws_route_table.public_rtb.id
   subnet_id      = aws_subnet.subnet_publicas.*.id[count.index]
 }
+
+output "subnets" {
+  value = aws_subnet.subnet_publicas
+}

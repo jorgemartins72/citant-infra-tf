@@ -51,4 +51,3 @@ output "pipeline" {
 output "pipeline_codebuilder_arn" {
   value = module.pipeline_api.codebuilder_arn
 }
-

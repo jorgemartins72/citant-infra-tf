@@ -9,3 +9,6 @@ output "dominio_primary_nameserver_website" {
 output "dominio_nameservers_website" {
   value = aws_route53_zone.this.name_servers
 }
+output "dominio_website_zone_id" {
+  value = aws_route53_zone.this.zone_id
+}

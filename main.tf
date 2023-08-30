@@ -53,12 +53,18 @@ module "pipeline_api" {
 }
 
 module "cluster_ecs" {
-  source              = "./modulos/ecs"
-  tagname             = var.tagname
-  projeto             = var.projeto
-  image_url           = "${module.repositorio_container_api.repositorio_url}:latest"
-  taskdefinition_name = "${var.projeto}-taskdefinition-api"
-  container_name      = "${var.projeto}-api"
+  source                  = "./modulos/ecs"
+  tagname                 = var.tagname
+  projeto                 = var.projeto
+  dominio                 = var.dominio_website
+  image_url               = "${module.repositorio_container_api.repositorio_url}:latest"
+  taskdefinition_name     = "${var.projeto}-api-taskdefinition"
+  container_name          = "${var.projeto}-api"
+  subnets                 = module.vpc.subnets
+  security_group_id       = module.vpc.security_group_id
+  website_zone_id         = module.website.dominio_website_zone_id
+  vpc_id                  = module.vpc.vpc_id
+  website_certificado_arn = module.website.website_certificado_arn
 }
 
 

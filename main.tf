@@ -43,6 +43,19 @@ module "repositorio_codigo" {
   projeto = var.projeto
 }
 
+module "sqs" {
+  source  = "./modulos/sqs"
+  projeto = var.projeto
+  tagname = var.tagname
+}
+
+module "cloudwatch" {
+  source = "./modulos/cloudwatch"
+  #   projeto = var.projeto
+  #   tagname = var.tagname
+  sqs_name = module.sqs.sqs_name
+}
+
 module "pipeline_api" {
   source          = "./modulos/pipeline/api"
   tagname         = var.tagname
@@ -57,14 +70,29 @@ module "cluster_ecs" {
   tagname                 = var.tagname
   projeto                 = var.projeto
   dominio                 = var.dominio_website
-  image_url               = "${module.repositorio_container_api.repositorio_url}:latest"
-  taskdefinition_name     = "${var.projeto}-api-taskdefinition"
-  container_name          = "${var.projeto}-api"
+  api_image_url           = "${module.repositorio_container_api.repositorio_url}:latest"
+  worker_image_url        = "${module.repositorio_container_api.repositorio_url}:latest"
   subnets                 = module.vpc.subnets
   security_group_id       = module.vpc.security_group_id
   website_zone_id         = module.website.dominio_website_zone_id
   vpc_id                  = module.vpc.vpc_id
   website_certificado_arn = module.website.website_certificado_arn
+  sqs_name                = module.sqs.sqs_name
 }
 
+# resource "aws_cloudwatch_metric_alarm" "teste" {
+#   alarm_name = "AlarmeFilaAAA"
+# }
 
+# resource "aws_appautoscaling_policy" "imported" {
+#   name = "PoliticaTesteUP"
+# }
+
+# import {
+#   to = aws_appautoscaling_policy.imported
+#   id = "citant-service-discovery-namespace/arn:aws:ecs:us-east-1:532911710482:service/CITANT-CLUSTER/CITANT-WORKER-Service/0/PoliticaUP"
+# }
+# output "worker_service_" {
+#   value = aws_appautoscaling_policy.imported
+# }
+# terraform import aws_appautoscaling_policy.imported CITANT-CLUSTER/CITANT-WORKER-Service/scalable-dimension/policy-name

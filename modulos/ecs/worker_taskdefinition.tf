@@ -1,5 +1,5 @@
-resource "aws_ecs_task_definition" "this" {
-  family                   = var.taskdefinition_name
+resource "aws_ecs_task_definition" "worker" {
+  family                   = "${var.projeto}-worker-taskdefinition"
   cpu                      = 512
   memory                   = 1024
   requires_compatibilities = ["FARGATE"]
@@ -13,8 +13,8 @@ resource "aws_ecs_task_definition" "this" {
   container_definitions = <<TASK_DEFINITION
 [
   {
-    "name": "${var.container_name}",
-    "image": "${var.image_url}",
+    "name": "${var.projeto}-worker",
+    "image": "${var.worker_image_url}",
     "essential": true,
     "portMappings": [
       {
@@ -27,7 +27,7 @@ resource "aws_ecs_task_definition" "this" {
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
-        "awslogs-group": "/ecs/${var.projeto}",
+        "awslogs-group": "/ecs/${var.projeto}-worker",
         "awslogs-region": "us-east-1",
         "awslogs-stream-prefix": "ecs"
       }
@@ -37,8 +37,8 @@ resource "aws_ecs_task_definition" "this" {
 TASK_DEFINITION
 }
 
-resource "aws_iam_role" "ecs_task_execution_role" {
-  name = "${var.tagname}-TaskExecutionRole"
+resource "aws_iam_role" "ecs_task_execution_role-worker" {
+  name = "${var.tagname}-TaskExecutionRole-WORKER"
 
   assume_role_policy = <<EOF
 {
@@ -57,18 +57,18 @@ resource "aws_iam_role" "ecs_task_execution_role" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-policy-attachment" {
-  role       = aws_iam_role.ecs_task_execution_role.name
+resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-policy-attachment-worker" {
+  role       = aws_iam_role.ecs_task_execution_role-worker.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-resource "aws_iam_role_policy_attachment" "log_exec" {
-  role       = aws_iam_role.ecs_task_execution_role.name
+resource "aws_iam_role_policy_attachment" "log_exec-worker" {
+  role       = aws_iam_role.ecs_task_execution_role-worker.name
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
 }
 
-resource "aws_iam_role" "ecs_task_role" {
-  name = "${var.tagname}-TaskRole"
+resource "aws_iam_role" "ecs_task_role-worker" {
+  name = "${var.tagname}-TaskRole-WORKER"
 
   assume_role_policy = <<EOF
 {
@@ -87,16 +87,16 @@ resource "aws_iam_role" "ecs_task_role" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "task_s3" {
+resource "aws_iam_role_policy_attachment" "task_s3-teste" {
   role       = aws_iam_role.ecs_task_role.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
 
-resource "aws_iam_role_policy_attachment" "log_task" {
+resource "aws_iam_role_policy_attachment" "log_task-teste" {
   role       = aws_iam_role.ecs_task_role.name
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
 }
 
-# output "taskdefinition" {
-#   value = aws_ecs_task_definition.this
+# output "worker_taskdefinition" {
+#   value = aws_ecs_task_definition.worker
 # }

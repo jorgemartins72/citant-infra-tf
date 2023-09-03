@@ -1,11 +1,11 @@
 variable "tagname" {}
 variable "dominio" {}
 variable "projeto" {}
-variable "image_url" {}
-variable "taskdefinition_name" {}
-variable "container_name" {}
+variable "api_image_url" {}
+variable "worker_image_url" {}
 variable "subnets" {}
 variable "security_group_id" {}
 variable "website_zone_id" {}
 variable "vpc_id" {}
 variable "website_certificado_arn" {}
+variable "sqs_name" {}

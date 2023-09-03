@@ -51,3 +51,11 @@ output "pipeline" {
 output "pipeline_codebuilder_arn" {
   value = module.pipeline_api.codebuilder_arn
 }
+
+# output "worker_service" {
+#   value = "--------------------------------------------"
+# }
+# output "worker_service_" {
+#   value = module.cluster_ecs.worker_service
+# }
+

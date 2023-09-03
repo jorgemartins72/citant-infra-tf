@@ -1,3 +1,8 @@
+resource "aws_service_discovery_http_namespace" "this" {
+  name        = "${var.projeto}-service-discovery-namespace"
+  description = ""
+}
+
 resource "aws_ecs_cluster" "this" {
   name = "${var.tagname}-CLUSTER"
 }
@@ -51,5 +56,4 @@ resource "aws_iam_role_policy" "ecs_cluster_policy" {
 }
 EOF
 }
-
 

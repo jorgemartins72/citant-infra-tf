@@ -10,10 +10,10 @@ resource "aws_alb" "ecs_cluster_alb" {
 }
 
 resource "aws_alb_target_group" "ecs_default_target_group" {
-  name     = "${var.tagname}-TG"
-  port     = 5000
-  protocol = "HTTP"
-  vpc_id   = var.vpc_id
+  name        = "${var.tagname}-TG"
+  port        = 5000
+  protocol    = "HTTP"
+  vpc_id      = var.vpc_id
   target_type = "ip"
 
   tags = {

@@ -33,15 +33,15 @@ module "website" {
   dominio = var.dominio_website
 }
 
-module "repositorio_container_api" {
-  source  = "./modulos/repositorio_container/api"
-  projeto = var.projeto
-}
+# module "repositorio_container_api" {
+#   source  = "./modulos/repositorio_container/api"
+#   projeto = var.projeto
+# }
 
-module "repositorio_codigo" {
-  source  = "./modulos/repositorio_codigo/api"
-  projeto = var.projeto
-}
+# module "repositorio_codigo" {
+#   source  = "./modulos/repositorio_codigo/api"
+#   projeto = var.projeto
+# }
 
 module "sqs" {
   source  = "./modulos/sqs"
@@ -50,28 +50,17 @@ module "sqs" {
 }
 
 module "cloudwatch" {
-  source = "./modulos/cloudwatch"
-  #   projeto = var.projeto
-  #   tagname = var.tagname
+  source   = "./modulos/cloudwatch"
   sqs_name = module.sqs.sqs_name
 }
 
-module "pipeline_api" {
-  source          = "./modulos/pipeline/api"
-  tagname         = var.tagname
-  repositorio_url = module.repositorio_codigo.repositorio_url
-  repositorio_arn = module.repositorio_codigo.repositorio_arn
-  docker_username = var.docker_username
-  docker_userpass = var.docker_userpass
-}
-
 module "cluster_ecs" {
+  docker_username         = var.docker_username
+  docker_userpass         = var.docker_userpass
   source                  = "./modulos/ecs"
   tagname                 = var.tagname
   projeto                 = var.projeto
   dominio                 = var.dominio_website
-  api_image_url           = "${module.repositorio_container_api.repositorio_url}:latest"
-  worker_image_url        = "${module.repositorio_container_api.repositorio_url}:latest"
   subnets                 = module.vpc.subnets
   security_group_id       = module.vpc.security_group_id
   website_zone_id         = module.website.dominio_website_zone_id

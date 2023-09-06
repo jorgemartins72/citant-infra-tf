@@ -140,6 +140,6 @@ resource "aws_cloudwatch_metric_alarm" "cpu_down" {
 #   }
 # }
 
-# output "service" {
-#   value = aws_ecs_service.ecs_service
-# }
+output "ecs_service_api_name" {
+  value = aws_ecs_service.ecs_service_api.name
+}

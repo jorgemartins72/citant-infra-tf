@@ -32,25 +32,25 @@ output "repositorio_api_container_image" {
   value = "--------------------------------------------"
 }
 output "repositorio_api_container_image_url" {
-  value = module.repositorio_container_api.repositorio_url
+  value = module.cluster_ecs.repositorio_url
 }
 
 output "repositorio_codigo_api_" {
   value = "--------------------------------------------"
 }
-output "repositorio_codigo_api_arn" {
-  value = module.repositorio_codigo.repositorio_arn
+output "codecommit_api_url" {
+  value = module.cluster_ecs.codecommit_api_url
 }
-output "repositorio_codigo_api_url" {
-  value = module.repositorio_codigo.repositorio_url
-}
+# output "repositorio_codigo_api_arn" {
+#   value = module.repositorio_codigo.repositorio_arn
+# }
 
-output "pipeline" {
-  value = "--------------------------------------------"
-}
-output "pipeline_codebuilder_arn" {
-  value = module.pipeline_api.codebuilder_arn
-}
+# output "pipeline" {
+#   value = "--------------------------------------------"
+# }
+# output "pipeline_codebuilder_arn" {
+#   value = module.pipeline_api.codebuilder_arn
+# }
 
 # output "worker_service" {
 #   value = "--------------------------------------------"

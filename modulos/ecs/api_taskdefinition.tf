@@ -14,7 +14,7 @@ resource "aws_ecs_task_definition" "api" {
 [
   {
     "name": "${var.projeto}-api-container",
-    "image": "${var.api_image_url}",
+    "image": "${aws_ecr_repository.ecr_api.repository_url}",
     "essential": true,
     "portMappings": [
       {
@@ -38,7 +38,7 @@ TASK_DEFINITION
 }
 
 resource "aws_iam_role" "ecs_task_execution_role" {
-  name = "${var.tagname}-TaskExecutionRole"
+  name = "${var.tagname}-TaskExecutionRole-API"
 
   assume_role_policy = <<EOF
 {
@@ -68,7 +68,7 @@ resource "aws_iam_role_policy_attachment" "log_exec" {
 }
 
 resource "aws_iam_role" "ecs_task_role" {
-  name = "${var.tagname}-TaskRole"
+  name = "${var.tagname}-TaskRole-API"
 
   assume_role_policy = <<EOF
 {

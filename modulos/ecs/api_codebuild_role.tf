@@ -1,60 +1,6 @@
-resource "aws_codebuild_project" "this" {
-  name         = "${var.tagname}-BUILDER-API-IMAGE"
-  service_role = aws_iam_role.BuildProjectRole.arn
 
-  artifacts {
-    type = "NO_ARTIFACTS"
-  }
-
-  environment {
-    compute_type                = "BUILD_GENERAL1_SMALL"
-    image                       = "aws/codebuild/standard:7.0-23.07.28"
-    type                        = "LINUX_CONTAINER"
-    image_pull_credentials_type = "CODEBUILD"
-    privileged_mode             = true
-
-    environment_variable {
-      name  = "DOCKERHUB_USERNAME"
-      value = var.docker_username
-    }
-
-    environment_variable {
-      name  = "DOCKERHUB_PASS"
-      value = var.docker_userpass
-    }
-
-  }
-
-  source_version = "refs/heads/master"
-
-  source {
-    type            = "CODECOMMIT"
-    location        = var.repositorio_url
-    git_clone_depth = 1
-    git_submodules_config {
-      fetch_submodules = false
-    }
-  }
-
-  logs_config {
-    cloudwatch_logs {
-      status = "ENABLED"
-    }
-
-    s3_logs {
-      encryption_disabled = false
-      status              = "DISABLED"
-    }
-  }
-
-
-  tags = {
-    Name = "${var.tagname} BUILDER"
-  }
-}
-
-resource "aws_iam_role" "BuildProjectRole" {
-  name = "${var.tagname}-CodeBuilderRole"
+resource "aws_iam_role" "build_role_api" {
+  name = "${var.tagname}-API-CodeBuilderRole"
 
   assume_role_policy = <<EOF
 {
@@ -72,9 +18,9 @@ resource "aws_iam_role" "BuildProjectRole" {
 EOF
 }
 
-resource "aws_iam_role_policy" "BuildProjectRolePolicy" {
-  name = "${var.tagname}-CodeBuilderRolePolicy"
-  role = aws_iam_role.BuildProjectRole.name
+resource "aws_iam_role_policy" "build_role_api_policy" {
+  name = "${var.tagname}-API-CodeBuilderRolePolicy"
+  role = aws_iam_role.build_role_api.name
 
   policy = <<POLICY
 {
@@ -82,7 +28,7 @@ resource "aws_iam_role_policy" "BuildProjectRolePolicy" {
   "Statement": [
       {
         "Effect": "Allow",
-        "Resource": ["*"],
+        "Resource": "*",
         "Action": [
           "logs:*"
         ]
@@ -90,7 +36,8 @@ resource "aws_iam_role_policy" "BuildProjectRolePolicy" {
       {
         "Effect": "Allow",
         "Resource": [
-          "arn:aws:s3:::codepipeline-us-east-1-*"
+          "${aws_s3_bucket.bucket_codepipeline_api.arn}",
+          "${aws_s3_bucket.bucket_codepipeline_api.arn}/*"
         ],
         "Action": [
           "s3:PutObject",
@@ -103,7 +50,7 @@ resource "aws_iam_role_policy" "BuildProjectRolePolicy" {
       {
         "Effect": "Allow",
         "Resource": [
-          "${var.repositorio_arn}"
+          "${aws_codecommit_repository.codecommit_api.arn}"
         ],
         "Action": [
           "codecommit:GitPull"
@@ -149,18 +96,14 @@ resource "aws_iam_role_policy" "BuildProjectRolePolicy" {
         "Action": [
           "ec2:CreateNetworkInterfacePermission"
         ],
-        "Resource": [
-          "*"
-        ]
+        "Resource": "*"
       },
       {
         "Effect": "Allow",
         "Action": [
           "s3:*"
         ],
-        "Resource": [
-          "*"
-        ]
+        "Resource": "*"
       },
       {
         "Effect": "Allow",
@@ -188,15 +131,9 @@ resource "aws_iam_role_policy" "BuildProjectRolePolicy" {
         "Action":[
           "kms:Decrypt"
         ],
-        "Resource":[
-          "*"
-        ]
+        "Resource": "*"
     }
   ]
 }
 POLICY
-}
-
-output "codebuilder_arn" {
-  value = aws_codebuild_project.this.arn
 }

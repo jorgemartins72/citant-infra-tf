@@ -8,7 +8,7 @@ resource "aws_ecs_cluster" "this" {
 }
 
 resource "aws_iam_role" "ecs_cluster_role" {
-  name = "${var.tagname}-CLusterRole"
+  name = "${var.tagname}-ClusterRole"
 
   assume_role_policy = <<EOF
 {
@@ -55,5 +55,9 @@ resource "aws_iam_role_policy" "ecs_cluster_policy" {
   ]
 }
 EOF
+}
+
+output "cluster_name" {
+  value = aws_ecs_cluster.this.name
 }
 

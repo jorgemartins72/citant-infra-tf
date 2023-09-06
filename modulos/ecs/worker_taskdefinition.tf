@@ -14,7 +14,7 @@ resource "aws_ecs_task_definition" "worker" {
 [
   {
     "name": "${var.projeto}-worker",
-    "image": "${var.worker_image_url}",
+    "image": "${aws_ecr_repository.ecr_api.repository_url}",
     "essential": true,
     "portMappings": [
       {

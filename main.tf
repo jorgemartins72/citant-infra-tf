@@ -49,11 +49,6 @@ module "sqs" {
   tagname = var.tagname
 }
 
-module "cloudwatch" {
-  source   = "./modulos/cloudwatch"
-  sqs_name = module.sqs.sqs_name
-}
-
 module "cluster_ecs" {
   docker_username         = var.docker_username
   docker_userpass         = var.docker_userpass

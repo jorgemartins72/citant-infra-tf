@@ -1,10 +1,10 @@
-resource "aws_cloudwatch_log_group" "codebuild_pipeline_api" {
-  name = "/codebuild/pipeline/api"
+resource "aws_cloudwatch_log_group" "codebuild_pipeline_worker" {
+  name = "/codebuild/pipeline/worker"
 }
 
-resource "aws_codebuild_project" "builder_api" {
-  name         = "${var.tagname}-BUILDER-API-IMAGE"
-  service_role = aws_iam_role.build_role_api.arn
+resource "aws_codebuild_project" "builder_worker" {
+  name         = "${var.tagname}-BUILDER-WORKER-IMAGE"
+  service_role = aws_iam_role.build_role_worker.arn
 
   artifacts {
     type = "NO_ARTIFACTS"
@@ -12,7 +12,7 @@ resource "aws_codebuild_project" "builder_api" {
 
   source {
     type     = "CODECOMMIT"
-    location = aws_codecommit_repository.codecommit_api.clone_url_http
+    location = aws_codecommit_repository.codecommit_worker.clone_url_http
   }
 
   environment {
@@ -31,7 +31,6 @@ resource "aws_codebuild_project" "builder_api" {
       name  = "DOCKERHUB_PASS"
       value = var.docker_userpass
     }
-
   }
 
   source_version = "master"
@@ -52,6 +51,6 @@ resource "aws_codebuild_project" "builder_api" {
   }
 }
 
-output "codebuilder_api_arn" {
-  value = aws_codebuild_project.builder_api.arn
+output "codebuilder_worker_arn" {
+  value = aws_codebuild_project.builder_worker.arn
 }

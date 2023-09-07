@@ -1,4 +1,8 @@
-resource "aws_ecs_task_definition" "api" {
+resource "aws_cloudwatch_log_group" "log_group_api" {
+  name = "/ecs/${var.projeto}-api"
+}
+
+resource "aws_ecs_task_definition" "taskdefinition_api" {
   family                   = "${var.projeto}-api-taskdefinition"
   cpu                      = 512
   memory                   = 1024
@@ -8,8 +12,8 @@ resource "aws_ecs_task_definition" "api" {
     operating_system_family = "LINUX"
     cpu_architecture        = "X86_64"
   }
-  execution_role_arn    = aws_iam_role.ecs_task_execution_role.arn
-  task_role_arn         = aws_iam_role.ecs_task_role.arn
+  execution_role_arn    = aws_iam_role.ecs_task_execution_role_api.arn
+  task_role_arn         = aws_iam_role.ecs_task_role_api.arn
   container_definitions = <<TASK_DEFINITION
 [
   {
@@ -37,7 +41,7 @@ resource "aws_ecs_task_definition" "api" {
 TASK_DEFINITION
 }
 
-resource "aws_iam_role" "ecs_task_execution_role" {
+resource "aws_iam_role" "ecs_task_execution_role_api" {
   name = "${var.tagname}-TaskExecutionRole-API"
 
   assume_role_policy = <<EOF
@@ -57,17 +61,17 @@ resource "aws_iam_role" "ecs_task_execution_role" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-policy-attachment" {
-  role       = aws_iam_role.ecs_task_execution_role.name
+resource "aws_iam_role_policy_attachment" "ecs-task-execution-role-policy-attachment-api" {
+  role       = aws_iam_role.ecs_task_execution_role_api.name
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
 }
 
-resource "aws_iam_role_policy_attachment" "log_exec" {
-  role       = aws_iam_role.ecs_task_execution_role.name
+resource "aws_iam_role_policy_attachment" "log_exec-api" {
+  role       = aws_iam_role.ecs_task_execution_role_api.name
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
 }
 
-resource "aws_iam_role" "ecs_task_role" {
+resource "aws_iam_role" "ecs_task_role_api" {
   name = "${var.tagname}-TaskRole-API"
 
   assume_role_policy = <<EOF
@@ -87,16 +91,16 @@ resource "aws_iam_role" "ecs_task_role" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "task_s3" {
-  role       = aws_iam_role.ecs_task_role.name
+resource "aws_iam_role_policy_attachment" "task_s3_api" {
+  role       = aws_iam_role.ecs_task_role_api.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
 
-resource "aws_iam_role_policy_attachment" "log_task" {
-  role       = aws_iam_role.ecs_task_role.name
+resource "aws_iam_role_policy_attachment" "log_task_api" {
+  role       = aws_iam_role.ecs_task_role_api.name
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
 }
 
 # output "taskdefinition" {
-#   value = aws_ecs_task_definition.api
+#   value = aws_ecs_task_definition.taskdefinition_api
 # }

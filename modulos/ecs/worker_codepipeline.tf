@@ -1,9 +1,9 @@
-resource "aws_codepipeline" "codepipeline_api" {
-  name     = "${var.projeto}-api-pipeline"
-  role_arn = aws_iam_role.codepipeline_role_api.arn
+resource "aws_codepipeline" "codepipeline_worker" {
+  name     = "${var.projeto}-worker-pipeline"
+  role_arn = aws_iam_role.codepipeline_role_worker.arn
 
   artifact_store {
-    location = aws_s3_bucket.bucket_codepipeline_api.bucket
+    location = aws_s3_bucket.bucket_codepipeline_worker.bucket
     type     = "S3"
   }
 
@@ -19,7 +19,7 @@ resource "aws_codepipeline" "codepipeline_api" {
       output_artifacts = ["source_output"]
 
       configuration = {
-        RepositoryName = aws_codecommit_repository.codecommit_api.repository_name
+        RepositoryName = aws_codecommit_repository.codecommit_worker.repository_name
         BranchName     = "master"
       }
     }
@@ -38,7 +38,7 @@ resource "aws_codepipeline" "codepipeline_api" {
       version          = "1"
 
       configuration = {
-        ProjectName = aws_codebuild_project.builder_api.name
+        ProjectName = aws_codebuild_project.builder_worker.name
       }
     }
   }
@@ -56,7 +56,7 @@ resource "aws_codepipeline" "codepipeline_api" {
 
       configuration = {
         ClusterName = aws_ecs_cluster.this.name
-        ServiceName = aws_ecs_service.ecs_service_api.name
+        ServiceName = aws_ecs_service.ecs_service_worker.name
         FileName    = "imagedefinitions.json"
       }
     }

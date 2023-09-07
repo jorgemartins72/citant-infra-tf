@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "bucket_codepipeline_api" {
-  bucket        = "${var.projeto}-pipeline-artifacts"
+  bucket        = "${var.projeto}-api-pipeline-artifacts"
   force_destroy = true
 }
 

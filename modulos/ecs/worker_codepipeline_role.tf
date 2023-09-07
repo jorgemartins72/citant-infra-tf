@@ -1,5 +1,5 @@
-resource "aws_iam_role" "codepipeline_role_api" {
-  name               = "${var.tagname}-API-CodePipelineRole"
+resource "aws_iam_role" "codepipeline_role_worker" {
+  name               = "${var.tagname}-WORKER-CodePipelineRole"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -16,9 +16,9 @@ resource "aws_iam_role" "codepipeline_role_api" {
 EOF
 }
 
-resource "aws_iam_role_policy" "codepipeline_policy_api" {
-  name   = "${var.tagname}-API-CodePipelineRolePolicy"
-  role   = aws_iam_role.codepipeline_role_api.id
+resource "aws_iam_role_policy" "codepipeline_policy_worker" {
+  name   = "${var.tagname}-WORKER-CodePipelineRolePolicy"
+  role   = aws_iam_role.codepipeline_role_worker.id
   policy = <<EOF
 {
     "Statement": [

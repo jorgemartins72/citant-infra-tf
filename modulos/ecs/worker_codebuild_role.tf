@@ -1,6 +1,6 @@
 
-resource "aws_iam_role" "build_role_api" {
-  name = "${var.tagname}-API-CodeBuilderRole"
+resource "aws_iam_role" "build_role_worker" {
+  name = "${var.tagname}-WORKER-CodeBuilderRole"
 
   assume_role_policy = <<EOF
 {
@@ -18,9 +18,9 @@ resource "aws_iam_role" "build_role_api" {
 EOF
 }
 
-resource "aws_iam_role_policy" "build_role_api_policy" {
-  name = "${var.tagname}-API-CodeBuilderRolePolicy"
-  role = aws_iam_role.build_role_api.name
+resource "aws_iam_role_policy" "build_role_worker_policy" {
+  name = "${var.tagname}-WORKER-CodeBuilderRolePolicy"
+  role = aws_iam_role.build_role_worker.name
 
   policy = <<POLICY
 {
@@ -36,8 +36,8 @@ resource "aws_iam_role_policy" "build_role_api_policy" {
       {
         "Effect": "Allow",
         "Resource": [
-          "${aws_s3_bucket.bucket_codepipeline_api.arn}",
-          "${aws_s3_bucket.bucket_codepipeline_api.arn}/*"
+          "${aws_s3_bucket.bucket_codepipeline_worker.arn}",
+          "${aws_s3_bucket.bucket_codepipeline_worker.arn}/*"
         ],
         "Action": [
           "s3:PutObject",
@@ -50,7 +50,7 @@ resource "aws_iam_role_policy" "build_role_api_policy" {
       {
         "Effect": "Allow",
         "Resource": [
-          "${aws_codecommit_repository.codecommit_api.arn}"
+          "${aws_codecommit_repository.codecommit_worker.arn}"
         ],
         "Action": [
           "codecommit:GitPull"
@@ -66,7 +66,7 @@ resource "aws_iam_role_policy" "build_role_api_policy" {
           "codebuild:BatchPutCodeCoverages"
         ],
         "Resource": [
-          "${aws_codebuild_project.builder_api.arn}-*"
+		  "${aws_codebuild_project.builder_worker.arn}"
         ]
       },
       {

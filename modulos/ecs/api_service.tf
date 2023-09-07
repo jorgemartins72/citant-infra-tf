@@ -1,6 +1,6 @@
 resource "aws_ecs_service" "ecs_service_api" {
   name            = "${var.tagname}-API-Service"
-  task_definition = aws_ecs_task_definition.api.arn
+  task_definition = aws_ecs_task_definition.taskdefinition_api.arn
   desired_count   = 1
   cluster         = aws_ecs_cluster.this.id
   launch_type     = "FARGATE"
@@ -140,6 +140,6 @@ resource "aws_cloudwatch_metric_alarm" "cpu_down" {
 #   }
 # }
 
-output "ecs_service_api_name" {
-  value = aws_ecs_service.ecs_service_api.name
-}
+# output "ecs_service_api_name" {
+#   value = aws_ecs_service.ecs_service_api.name
+# }

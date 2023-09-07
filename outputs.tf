@@ -21,41 +21,24 @@ output "_website_dns__primario" {
 output "_website_dns_" {
   value = module.website.dominio_nameservers_website
 }
-# output "_website_cdn_url" {
-#   value = module.website.cdn_url
-# }
-# output "_website_distruibution_id" {
-#   value = module.website.distruibution_id
-# }
 
-output "repositorio_api_container_image" {
+output "ecr" {
   value = "--------------------------------------------"
 }
-output "repositorio_api_container_image_url" {
-  value = module.cluster_ecs.repositorio_url
+output "ecr-api" {
+  value = module.cluster_ecs.ecr_api_repository_url
+}
+output "ecr-worker" {
+  value = module.cluster_ecs.ecr_worker_repository_url
 }
 
-output "repositorio_codigo_api_" {
+output "codecommit" {
   value = "--------------------------------------------"
 }
 output "codecommit_api_url" {
   value = module.cluster_ecs.codecommit_api_url
 }
-# output "repositorio_codigo_api_arn" {
-#   value = module.repositorio_codigo.repositorio_arn
-# }
-
-# output "pipeline" {
-#   value = "--------------------------------------------"
-# }
-# output "pipeline_codebuilder_arn" {
-#   value = module.pipeline_api.codebuilder_arn
-# }
-
-# output "worker_service" {
-#   value = "--------------------------------------------"
-# }
-# output "worker_service_" {
-#   value = module.cluster_ecs.worker_service
-# }
+output "codecommit_worker_url" {
+  value = module.cluster_ecs.codecommit_worker_url
+}
 

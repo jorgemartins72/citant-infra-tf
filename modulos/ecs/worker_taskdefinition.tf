@@ -1,3 +1,7 @@
+resource "aws_cloudwatch_log_group" "log_group-worker" {
+  name = "/ecs/${var.projeto}-worker"
+}
+
 resource "aws_ecs_task_definition" "worker" {
   family                   = "${var.projeto}-worker-taskdefinition"
   cpu                      = 512
@@ -8,13 +12,13 @@ resource "aws_ecs_task_definition" "worker" {
     operating_system_family = "LINUX"
     cpu_architecture        = "X86_64"
   }
-  execution_role_arn    = aws_iam_role.ecs_task_execution_role.arn
-  task_role_arn         = aws_iam_role.ecs_task_role.arn
+  execution_role_arn    = aws_iam_role.ecs_task_execution_role-worker.arn
+  task_role_arn         = aws_iam_role.ecs_task_role-worker.arn
   container_definitions = <<TASK_DEFINITION
 [
   {
-    "name": "${var.projeto}-worker",
-    "image": "${aws_ecr_repository.ecr_api.repository_url}",
+    "name": "${var.projeto}-worker-container",
+    "image": "${aws_ecr_repository.ecr_worker.repository_url}",
     "essential": true,
     "portMappings": [
       {
@@ -87,13 +91,13 @@ resource "aws_iam_role" "ecs_task_role-worker" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "task_s3-teste" {
-  role       = aws_iam_role.ecs_task_role.name
+resource "aws_iam_role_policy_attachment" "task_s3-worker" {
+  role       = aws_iam_role.ecs_task_role-worker.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
 
-resource "aws_iam_role_policy_attachment" "log_task-teste" {
-  role       = aws_iam_role.ecs_task_role.name
+resource "aws_iam_role_policy_attachment" "log_task-worker" {
+  role       = aws_iam_role.ecs_task_role-worker.name
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
 }
 

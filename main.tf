@@ -26,6 +26,8 @@ module "vpc" {
 module "app_frontend" {
   source  = "./modulos/s3/bucket-app-frontend"
   dominio = var.dominio_app_frontend
+  tagname = var.tagname
+  projeto = var.projeto
 }
 
 module "website" {

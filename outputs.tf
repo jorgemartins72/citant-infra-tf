@@ -5,12 +5,6 @@ output "__app_dns__primario" {
 output "__app_dns_" {
   value = module.app_frontend.dominio_nameservers_app
 }
-# output "__app_cdn_url" {
-#   value = module.app_frontend.cdn_url
-# }
-# output "__app_distruibution_id" {
-#   value = module.app_frontend.distruibution_id
-# }
 
 output "__website_dns__" {
   value = "--------------------------------------------"
@@ -38,7 +32,17 @@ output "codecommit" {
 output "codecommit_api_url" {
   value = module.cluster_ecs.codecommit_api_url
 }
+output "codecommit_app_url" {
+  value = module.app_frontend.codecommit_app_url
+}
 output "codecommit_worker_url" {
   value = module.cluster_ecs.codecommit_worker_url
 }
+# output "bucket_app" {
+#   value = module.app_frontend.bucket_app
+# }
+# output "distribution_app" {
+#   value = module.app_frontend.distribution_app
+# }
+
 

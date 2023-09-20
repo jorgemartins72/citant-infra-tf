@@ -1,5 +1,5 @@
 resource "aws_codepipeline" "codepipeline_app" {
-  name     = "${var.projeto}-app-pipeline"
+  name     = "${var.projeto}-website-pipeline"
   role_arn = aws_iam_role.codepipeline_role_app.arn
 
   artifact_store {
@@ -42,23 +42,4 @@ resource "aws_codepipeline" "codepipeline_app" {
       }
     }
   }
-
-  #   stage {
-  #     name = "Deploy"
-
-  #     action {
-  #       name            = "Deploy"
-  #       category        = "Deploy"
-  #       owner           = "AWS"
-  #       provider        = "ECS"
-  #       input_artifacts = ["build_output"]
-  #       version         = "1"
-
-  #       configuration = {
-  #         ClusterName = aws_ecs_cluster.this.name
-  #         ServiceName = aws_ecs_service.ecs_service_worker.name
-  #         FileName    = "imagedefinitions.json"
-  #       }
-  #     }
-  #   }
 }

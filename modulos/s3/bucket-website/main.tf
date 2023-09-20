@@ -1,4 +1,4 @@
-# resource "aws_s3_bucket_website_configuration" "web" {
+# resource "aws_s3_bucket_app_configuration" "web" {
 #   bucket = aws_s3_bucket.this.id
 #   index_document {
 #     suffix = "index.html"

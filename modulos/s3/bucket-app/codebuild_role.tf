@@ -50,14 +50,19 @@ resource "aws_iam_role_policy" "build_role_app_policy" {
       {
         "Effect": "Allow",
         "Action": [
-          "codebuild:CreateReportGroup",
-          "codebuild:CreateReport",
-          "codebuild:UpdateReport",
-          "codebuild:BatchPutTestCases",
-          "codebuild:BatchPutCodeCoverages"
+          "codebuild:*"
         ],
         "Resource": [
           "${aws_codebuild_project.builder_app.arn}-*"
+        ]
+      },
+      {
+        "Effect": "Allow",
+        "Resource": [
+          "${aws_codecommit_repository.codecommit_app.arn}"
+        ],
+        "Action": [
+          "codecommit:GitPull"
         ]
       },
       {
@@ -137,3 +142,4 @@ resource "aws_iam_role_policy" "build_role_app_policy" {
 }
 POLICY
 }
+

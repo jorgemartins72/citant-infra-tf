@@ -5,6 +5,7 @@ resource "aws_cloudwatch_log_group" "codebuild_pipeline_app" {
 resource "aws_codebuild_project" "builder_app" {
   name         = "${var.tagname}-BUILDER-APP"
   service_role = aws_iam_role.build_role_app.arn
+  depends_on = [ aws_cloudfront_distribution.distribution_app ]
 
   artifacts {
     type = "NO_ARTIFACTS"

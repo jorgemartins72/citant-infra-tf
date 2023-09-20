@@ -2,7 +2,7 @@ resource "aws_s3_bucket" "log-app" {
   bucket        = "${var.dominio}--logs"
   force_destroy = true
   tags = {
-    Name = "Log do app ${var.dominio}"
+    Name = "Log do website ${var.dominio}"
   }
 }
 

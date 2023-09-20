@@ -24,7 +24,7 @@ module "vpc" {
 }
 
 module "app_frontend" {
-  source  = "./modulos/s3/bucket-app-frontend"
+  source  = "./modulos/s3/bucket-app"
   dominio = var.dominio_app_frontend
   tagname = var.tagname
   projeto = var.projeto
@@ -34,16 +34,6 @@ module "website" {
   source  = "./modulos/s3/bucket-website"
   dominio = var.dominio_website
 }
-
-# module "repositorio_container_api" {
-#   source  = "./modulos/repositorio_container/api"
-#   projeto = var.projeto
-# }
-
-# module "repositorio_codigo" {
-#   source  = "./modulos/repositorio_codigo/api"
-#   projeto = var.projeto
-# }
 
 module "sqs" {
   source  = "./modulos/sqs"

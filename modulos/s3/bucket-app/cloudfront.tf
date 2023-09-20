@@ -63,7 +63,7 @@ resource "aws_cloudfront_distribution" "distribution_app" {
 resource "aws_route53_record" "app_cloudfront_domain" {
   depends_on = [aws_cloudfront_distribution.distribution_app]
   name       = var.dominio
-  zone_id    = aws_route53_zone.this.id
+  zone_id    = aws_route53_zone.app_frontend.id
   type       = "A"
 
   alias {
@@ -76,7 +76,7 @@ resource "aws_route53_record" "app_cloudfront_domain" {
 resource "aws_route53_record" "www_app_cloudfront_domain" {
   depends_on = [aws_cloudfront_distribution.distribution_app]
   name       = "www.${var.dominio}"
-  zone_id    = aws_route53_zone.this.id
+  zone_id    = aws_route53_zone.app_frontend.id
   type       = "A"
 
   alias {

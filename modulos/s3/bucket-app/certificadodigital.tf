@@ -24,5 +24,5 @@ resource "aws_route53_record" "cert_validation_app" {
   records         = [each.value.record]
   ttl             = 60
   type            = each.value.type
-  zone_id         = aws_route53_zone.this.id
+  zone_id         = aws_route53_zone.app_frontend.id
 }

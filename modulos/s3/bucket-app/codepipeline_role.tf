@@ -16,7 +16,7 @@ resource "aws_iam_role" "codepipeline_role_app" {
 EOF
 }
 
-resource "aws_iam_role_policy" "codepipeline_policy_worker" {
+resource "aws_iam_role_policy" "codepipeline_policy_app" {
   name   = "${var.tagname}-APP-CodePipelineRolePolicy"
   role   = aws_iam_role.codepipeline_role_app.id
   policy = <<EOF
@@ -48,7 +48,7 @@ resource "aws_iam_role_policy" "codepipeline_policy_worker" {
                 "codecommit:GetUploadArchiveStatus",
                 "codecommit:UploadArchive"
             ],
-            "Resource": "*",
+            "Resource": ["${aws_codecommit_repository.codecommit_app.arn}"],
             "Effect": "Allow"
         },
         {

@@ -5,10 +5,10 @@ resource "aws_codecommit_repository" "codecommit_app" {
 output "codecommit_app_url" {
   value = aws_codecommit_repository.codecommit_app.clone_url_http
 }
-# output "repositorio_arn" {
-#   value = aws_codecommit_repository.codecommit_api.arn
-# }
-# output "repositorio_name" {
-#   value = aws_codecommit_repository.codecommit_api.repository_name
-# }
+output "codecommit_app_arn" {
+  value = aws_codecommit_repository.codecommit_app.arn
+}
+output "codecommit_app_name" {
+  value = aws_codecommit_repository.codecommit_app.repository_name
+}
 
